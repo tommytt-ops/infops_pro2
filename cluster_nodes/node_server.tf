@@ -10,16 +10,16 @@ provider "openstack" {
   cloud = "openstack" 
 }
 
-resource "openstack_blockstorage_volume_v3" "boot_volume" {
+resource "openstack_blockstorage_volume_v2" "boot_volume" {
   count = 3
-  name  = "boot_volume${count.index + 1}"
+  name  = "boot_volume${count.index}"
   size  = 40
 }
 
-resource "openstack_blockstorage_volume_v3" "ceph_volume" {
+resource "openstack_blockstorage_volume_v2" "ceph_volume" {
   count = 3
-  name  = "ceph_volume${count.index + 1}"
-  size  = 20
+  name  = "ceph_volume${count.index}"
+  size  = 30
 }
 
 resource "openstack_compute_instance_v2" "master_instance" {
@@ -31,7 +31,7 @@ resource "openstack_compute_instance_v2" "master_instance" {
   security_groups = ["Ansible"]
 
   block_device {
-    uuid                = openstack_blockstorage_volume_v3.boot_volume[count.index].id
+    uuid                = openstack_blockstorage_volume_v2.boot_volume[count.index].id
     source_type         = "volume"
     destination_type    = "volume"
     boot_index          = 0
@@ -54,5 +54,5 @@ resource "openstack_compute_volume_attach_v2" "ceph_volume_attach" {
   count = 3
 
   instance_id = openstack_compute_instance_v2.master_instance[count.index].id
-  volume_id   = openstack_blockstorage_volume_v3.ceph_volume[count.index].id
+  volume_id   = openstack_blockstorage_volume_v2.ceph_volume[count.index].id
 }
