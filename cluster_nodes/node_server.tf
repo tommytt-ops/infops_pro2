@@ -13,7 +13,7 @@ provider "openstack" {
 resource "openstack_blockstorage_volume_v3" "boot_volume" {
   count = 5
   name  = "boot_volume${count.index+1}"
-  size  = 30
+  size  = 20
   image_id = "6094568b-0d16-48a5-bc10-66645c361d4a"
 }
 
@@ -26,7 +26,7 @@ resource "openstack_blockstorage_volume_v3" "ceph_volume" {
 resource "openstack_compute_instance_v2" "master_instance" {
   count = 5
   name          = "Node${count.index+1}"
-  flavor_name   = "css.2c4r.10g"
+  flavor_name   = "css.2c6r.20g"
   key_pair      = "Ansible"
   security_groups = ["default"]
 
