@@ -25,7 +25,7 @@ resource "openstack_blockstorage_volume_v3" "ceph_volume" {
 
 resource "openstack_compute_instance_v2" "master_instance" {
   count = 5
-  name          = "Node${count.index}"
+  name          = "Node${count.index+1}"
   flavor_name   = "css.2c4r.10g"
   key_pair      = "Ansible"
   security_groups = ["default"]
