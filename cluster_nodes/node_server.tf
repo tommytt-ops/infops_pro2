@@ -51,7 +51,7 @@ resource "openstack_compute_instance_v2" "master_instance" {
 }
 
 resource "openstack_compute_volume_attach_v2" "ceph_volume_attach" {
-  count = 3
+  count = 4
 
   instance_id = openstack_compute_instance_v2.master_instance[count.index].id
   volume_id   = openstack_blockstorage_volume_v3.ceph_volume[count.index].id
