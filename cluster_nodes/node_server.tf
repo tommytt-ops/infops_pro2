@@ -19,7 +19,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
 
 resource "openstack_blockstorage_volume_v3" "ceph_volume" {
   count = 4
-  name  = "ceph_volume${count.index}+1"
+  name  = "ceph_volume${count.index+1}"
   size  = 20
 }
 
