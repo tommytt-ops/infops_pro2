@@ -17,8 +17,23 @@ resource "openstack_compute_instance_v2" "master_instance" {
         key_pair = "key"
         security_groups = ["default"]
 
+        block_device {
+          uuid                = openstack_blockstorage_volume_v3.boot_volume[count.index].id
+          source_type         = "volume"
+          destination_type    = "volume"
+          boot_index          = 0
+          delete_on_termination = true
+        }
+
         network {
         name = "acit"
+        }
+
+        resource "openstack_blockstorage_volume_v3" "boot_volume" {
+            count = 3
+            name  = "boot_volume${count.index}"
+            size  = 40
+            image_id = "6094568b-0d16-48a5-bc10-66645c361d4a"
         }
 
         connection {
@@ -32,7 +47,8 @@ resource "openstack_compute_instance_v2" "master_instance" {
          inline = [
                 "sudo mkdir /home/ubuntu/.config",
                 "sudo mkdir /home/ubuntu/.config/openstack",
-                "sudo chown ubuntu: /home/ubuntu/.config/openstack",      
+                "sudo chown ubuntu: /home/ubuntu/.config/openstack",
+                "sudo apt install -y python3-openstackclient", 
             ]
         }
 
@@ -40,6 +56,15 @@ resource "openstack_compute_instance_v2" "master_instance" {
             source      = "/Users/tommytran/.config/openstack/clouds.yml" 
             destination = "/home/ubuntu/.config/openstack/clouds.yml"
         }
+
+        provisioner "remote-exec" {
+         inline = [
+                "openstack --os-cloud=openstack keypair delete masterKey",
+                "openstack --os-cloud=openstack keypair create --public-key ~/.ssh/id_rsa.pub masterKey",       
+            ]
+        }
+
+       
 
       
 
