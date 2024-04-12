@@ -60,7 +60,7 @@ data "template_file" "ansible_inventory" {
   template = file("${path.module}/inventory.tpl")
 
   vars = {
-    ips = [for instance in openstack_compute_instance_v2.master_instance : instance.access_ip_v4]
+    ips = join(",", [for instance in openstack_compute_instance_v2.master_instance : instance.access_ip_v4])
   }
 }
 
@@ -72,5 +72,6 @@ resource "local_file" "inventory" {
 output "ansible_inventory" {
   value = data.template_file.ansible_inventory.rendered
 }
+
 
  
