@@ -57,7 +57,7 @@ resource "openstack_compute_volume_attach_v2" "ceph_volume_attach" {
 }
 
 data "template_file" "ansible_inventory" {
-  template = file("${path.module}/inventory.tpl")
+  template = file("${path.module}/inventory.tftpl")
 
   vars = {
     ips = join(",", [for instance in openstack_compute_instance_v2.master_instance : instance.access_ip_v4])
