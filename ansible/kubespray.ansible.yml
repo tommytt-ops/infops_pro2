@@ -52,4 +52,4 @@
         sudo swapoff -a
 
 - import_playbook: /home/ubuntu/infops_pro2/ansible/kubespray/cluster.yml
-  inventory: /home/ubuntu/infops_pro2/ansible/kubespray/inventory/mycluster/inventory.ini
+
