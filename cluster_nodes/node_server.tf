@@ -56,8 +56,8 @@ resource "openstack_compute_volume_attach_v2" "ceph_volume_attach" {
   volume_id   = openstack_blockstorage_volume_v3.ceph_volume[count.index].id
 }
 
-resource "template_file" "ansible_inventory" {
-  template = file("${path.module}/inventory.tpl")
+data "template_file" "ansible_inventory" {
+  template = "${file("${path.module}/inventory.tpl")}"
 
   vars = {
     ips = join(",", [for instance in openstack_compute_instance_v2.master_instance : instance.access_ip_v4])
@@ -70,7 +70,7 @@ resource "local_file" "inventory" {
 }
 
 output "debug_ips" {
-  value = [for instance in openstack_compute_instance_v2.master_instance : instance.access_ip_v4]
+  value = join(",", [for instance in openstack_compute_instance_v2.master_instance : instance.access_ip_v4])
 }
 
 
