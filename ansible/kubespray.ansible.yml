@@ -15,7 +15,7 @@
     - name: Clone Kubespray repository
       git:
         repo: 'https://github.com/kubernetes-sigs/kubespray.git'
-        dest: "~/kubespray"
+        dest: "/home/ubuntu/infops_pro2/ansible"
         clone: yes
         update: yes
 
