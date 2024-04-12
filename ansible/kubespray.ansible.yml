@@ -30,15 +30,12 @@
       command: terraform apply -auto-approve
       args:
         chdir: /home/ubuntu/infops_pro2/cluster_nodes
-    - name: Create Kubespray inventory file
-      template:
-        src: /home/ubuntu/infops_pro2/cluster_nodes/inventory.tmpl
-        dest: /home/ubuntu/infops_pro2/ansible/kubespray/inventory/mycluster/inventory.ini
 
-- name: Configure cluster nodes and deploy Kubernetes with Kubespray
+- name: Configure cluster nodes 
   hosts: all
   gather_facts: no
   become: yes
+  inventory: /home/ubuntu/infops_pro2/ansible/kubespray/inventory/mycluster/inventory.ini
   tasks:
     - name: Grant NOPASSWD sudo privileges
       ansible.builtin.shell: |
@@ -51,5 +48,11 @@
         sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
         sudo swapoff -a
 
-- import_playbook: /home/ubuntu/infops_pro2/ansible/kubespray/cluster.yml
+
+
+
+
+    
+
+
 
