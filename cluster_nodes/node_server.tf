@@ -69,9 +69,10 @@ resource "local_file" "inventory" {
   filename = "${path.module}/ansible_inventory.ini"
 }
 
-output "ansible_inventory" {
-  value = data.template_file.ansible_inventory.rendered
+output "debug_ips" {
+  value = [for instance in openstack_compute_instance_v2.master_instance : instance.access_ip_v4]
 }
+
 
 
  
