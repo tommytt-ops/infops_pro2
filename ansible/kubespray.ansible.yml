@@ -1,0 +1,25 @@
+- name: Set up Kubespray on localhost
+  hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+    - name: Update apt repository and install packages
+      apt:
+        update_cache: yes
+        name:
+          - git
+          - python3
+          - python3-pip
+        state: present
+
+    - name: Clone Kubespray repository
+      git:
+        repo: 'https://github.com/kubernetes-sigs/kubespray.git'
+        dest: "~/kubespray"
+        clone: yes
+        update: yes
+
+    - name: Install Python packages from requirements
+      pip:
+        requirements: "~/kubespray/requirements.txt"
+        executable: pip3

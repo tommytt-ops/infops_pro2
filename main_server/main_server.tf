@@ -49,7 +49,10 @@ resource "openstack_compute_instance_v2" "master_instance" {
       "sudo mkdir /home/ubuntu/.config/openstack",
       "sudo chown ubuntu:ubuntu /home/ubuntu/.config/openstack",
       "sudo apt install -y python3-openstackclient",
-      "ssh-keygen -q -N \"\" -f /home/ubuntu/.ssh/id_rsa"
+      "ssh-keygen -q -N \"\" -f /home/ubuntu/.ssh/id_rsa",
+      "sudo apt -y install software-properties-common",
+      "sudo apt-add-repository ppa:ansible/ansible -y",
+      "sudo apt install ansible -y",
     ]
   }
 
