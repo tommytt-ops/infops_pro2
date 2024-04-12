@@ -58,10 +58,37 @@ resource "openstack_compute_volume_attach_v2" "ceph_volume_attach" {
 
 locals {
   inventory_content = <<EOT
-[kubernetes_cluster]
+[all]
 %{ for idx, ip in openstack_compute_instance_v2.master_instance.*.access_ip_v4 ~}
 node${idx + 1} ansible_host=${ip} ansible_user=ubuntu
 %{ endfor ~}
+
+[kube-master]
+node1
+node2
+
+[etcd]
+node1
+node2
+node3
+
+[kube-node]
+node1
+node2
+node3
+node4
+node5
+
+[k8s-cluster:children]
+kube-master
+kube-node
+
+[calico-rr]
+
+[vault]
+node1
+node2
+node3
 EOT
 }
 
