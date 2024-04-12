@@ -56,9 +56,21 @@ resource "openstack_compute_volume_attach_v2" "ceph_volume_attach" {
   volume_id   = openstack_blockstorage_volume_v3.ceph_volume[count.index].id
 }
 
-output "ansible_inventory" {
-  value = templatefile("inventory.tmpl", {
-    instance_ips = openstack_compute_instance_v2.master_instance[*].access_ip_v4
-  })
+data "template_file" "ansible_inventory" {
+  template = file("${path.module}/inventory.tpl")
+
+  vars = {
+    ips = [for instance in openstack_compute_instance_v2.master_instance : instance.access_ip_v4]
+  }
 }
+
+resource "local_file" "inventory" {
+  content  = data.template_file.ansible_inventory.rendered
+  filename = "${path.module}/ansible_inventory.ini"
+}
+
+output "ansible_inventory" {
+  value = data.template_file.ansible_inventory.rendered
+}
+
  
