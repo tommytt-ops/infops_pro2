@@ -40,23 +40,4 @@
         path: "/home/ubuntu/infops_pro2/cluster_nodes/ansible_inventory.ini"
         state: present
 
-- name: Configure cluster nodes
-  hosts: all
-  gather_facts: no
-  become: yes
-  tasks:
-    - name: Grant NOPASSWD sudo privileges
-      ansible.builtin.shell:
-        cmd: echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu
 
-    - name: Enable IP forwarding
-      ansible.builtin.shell:
-        cmd: echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf
-
-    - name: Disable swap
-      ansible.builtin.shell:
-        cmd: sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab && sudo swapoff -a
-
-- name: Deploy Kubernetes with Kubespray
-  import_playbook: /home/ubuntu/infops_pro2/ansible/kubespray/cluster.yml
-  inventory: /home/ubuntu/infops_pro2/cluster_nodes/ansible_inventory.ini
