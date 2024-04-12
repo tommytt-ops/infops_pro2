@@ -34,3 +34,32 @@
       command: terraform apply -auto-approve
       args:
         chdir: /home/ubuntu/infops_pro2/cluster_nodes
+      register: terraform_output
+
+    - name: Create Kubespray inventory file
+      template:
+        src: /home/ubuntu/infops_pro2/cluster_nodes/inventory.tmpl
+        dest: /home/ubuntu/infops_pro2/ansible/kubespray/inventory/mycluster/inventory.ini
+    
+    - name: Grant NOPASSWD sudo privileges
+      ansible.builtin.shell: |
+        echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu
+      delegate_to: "{{ item }}"
+      with_inventory_hostnames: all
+
+    - name: Enable IP forwarding 
+      ansible.builtin.shell: |
+        echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf
+      delegate_to: "{{ item }}"
+      with_inventory_hostnames: all
+
+    - name: Disable swap 
+      ansible.builtin.shell: |
+        sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+        sudo swapoff -a
+      delegate_to: "{{ item }}"
+      with_inventory_hostnames: all
+
+    - name: Run Kubespray 
+      import_playbook: /home/ubuntu/infops_pro2/ansible/kubespray/cluster.yml
+      inventory: /home/ubuntu/infops_pro2/ansible/kubespray/inventory/mycluster/inventory.ini
