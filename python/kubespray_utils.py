@@ -41,3 +41,18 @@ def all_server_list():
         print(f"Command failed with error: {result.stderr}")
 
     return ip_list
+
+def apply_terraform():
+    terraform_directory = '../cluster_nodes'
+    os.chdir(terraform_directory)  
+
+    subprocess.run("terraform init", shell=True, check=True)
+
+    result = subprocess.run("echo yes | terraform apply", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+    if result.returncode == 0:
+        print("Terraform apply was successful")
+        print(result.stdout)
+    else:
+        print("Terraform apply failed")
+        print(result.stderr)

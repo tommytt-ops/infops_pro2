@@ -25,19 +25,6 @@
         requirements: "/home/ubuntu/infops_pro2/ansible/kubespray/requirements.txt"
         executable: pip3
 
-    - name: Initialize terraform
-      command: terraform init
-      args:
-        chdir: /home/ubuntu/infops_pro2/cluster_nodes
-
-    - name: Apply terraform
-      command: terraform apply -auto-approve
-      args:
-        chdir: /home/ubuntu/infops_pro2/cluster_nodes
-
-    - name: Wait for the inventory file to be created
-      wait_for:
-        path: "/home/ubuntu/infops_pro2/cluster_nodes/ansible_inventory.ini"
-        state: present
+  
 
 
