@@ -7,7 +7,7 @@ def run_setup_palybook():
     playbook_dir = "../ansible"
     os.chdir(playbook_dir)
 
-    result = subprocess.run('ansible-playbook kubespray_setup.ansible.yml -i "localhost," -c local', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    result = subprocess.run('ansible-playbook kubespray_setup.ansible.yml', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
     if result.returncode == 0:
         print("Playbook applied")
