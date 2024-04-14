@@ -78,7 +78,10 @@ def kubespray_run(ip_list):
     result6 = subprocess.run(command6, shell=True, executable='/bin/bash', stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
     command7 = """ansible all -m shell -a "sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab && sudo swapoff -a" -i inventory/mycluster/hosts.yml --user ubuntu"""
-    result7 = subprocess.run(command6, shell=True, executable='/bin/bash', stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    result7 = subprocess.run(command7, shell=True, executable='/bin/bash', stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+    if result1 or result2 or result3 or result4 or result4 or result5 or result6 or result7 != 0:
+        print("fail")
 
 
     
