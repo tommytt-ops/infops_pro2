@@ -11,9 +11,9 @@ if __name__ == "__main__":
     kubespray_dir="/home/ubuntu/kubespray"
     os.chdir(kubespray_dir)
 
-    
+    ip_list = all_server_list()
 
-    print(set_ips())
+    print(set_ips(ip_list))
 
     
 
