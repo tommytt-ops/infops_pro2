@@ -61,7 +61,7 @@ def set_ips(ip_list):
 
     ips_formatted = ' '.join(ip_list)
 
-    command1 = f"declare -a IPS=(${ips_formatted})"
+    command1 = f"declare -a IPS=({ips_formatted})"
     result1 = subprocess.run(command1, shell=True, check=True)
 
     command2 = "CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}"
