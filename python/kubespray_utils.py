@@ -59,7 +59,15 @@ def apply_terraform():
 
 def set_ips(ip_list):
 
-    return " ".join(ip_list)
+    command1 = f"declare -a IPS=(${ip_list})"
+    result1 = subprocess.run(command1, shell=True, check=True)
+
+    command2 = "CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}"
+    result2 = subprocess.run(command2, shell=True, check=True)
+
+
+
+    
 
 
 
