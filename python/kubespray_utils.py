@@ -56,3 +56,10 @@ def apply_terraform():
     else:
         print("Terraform apply failed")
         print(result.stderr)
+
+def set_ips(ip_list):
+
+    return " ".join(ip_list)
+
+
+
