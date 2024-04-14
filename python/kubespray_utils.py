@@ -58,14 +58,12 @@ def apply_terraform():
         print(result.stderr)
 
 def kubespray_run(ip_list):
-    # Prepare the IP addresses as a space-separated string
+  
     ips_formatted = ' '.join(ip_list)
 
-    # Command executions with error handling
     commands = [
         ("cp -rfp inventory/sample inventory/mycluster", "Copying inventory"),
-        (f"declare -a IPS=({ips_formatted})", "Declaring IP array"),
-        ("CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}", "Running inventory builder"),
+        (f"CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py {ips_formatted}", "Running inventory builder"),
         ('echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu', "Setting sudoers for ubuntu"),
         ("""ansible all -m shell -a "echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ubuntu" -i inventory/mycluster/hosts.yml --user ubuntu""", "Applying sudoers change via Ansible"),
         ("""ansible all -m shell -a "echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf" -i inventory/mycluster/hosts.yml --user ubuntu""", "Enabling IP forwarding"),
