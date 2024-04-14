@@ -68,6 +68,7 @@ def kubespray_run(ip_list):
         ("""ansible all -m shell -a "echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ubuntu" -i inventory/mycluster/hosts.yml --user ubuntu""", "Applying sudoers change via Ansible"),
         ("""ansible all -m shell -a "echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf" -i inventory/mycluster/hosts.yml --user ubuntu""", "Enabling IP forwarding"),
         ("""ansible all -m shell -a "sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab && sudo swapoff -a" -i inventory/mycluster/hosts.yml --user ubuntu""", "Disabling swap and updating fstab"),
+        ("""ansible-playbook -i inventory/mycluster/hosts.yml --become --become-user=root cluster.yml --user ubuntu""")
     ]
 
     for command, description in commands:
