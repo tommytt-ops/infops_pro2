@@ -14,7 +14,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
   count     = 5
   name      = "boot_volume${count.index + 1}"
   size      = 20
-  image_id  = "6094568b-0d16-48a5-bc10-66645c361d4a"
+  image_id  = "83255b25-fe64-42b8-8f56-da379ec0519a"
 }
 
 resource "openstack_blockstorage_volume_v3" "ceph_volume" {
